@@ -1,0 +1,144 @@
+================================================================
+SISKEUDES - DAFTAR & PENJELASAN FILE SQL
+================================================================
+Semua file ada di folder: supabase/migrations/
+
+Cara pakai:
+1. Buka file SQL di text editor
+2. Ctrl+A (pilih semua) -> Ctrl+C (salin)
+3. Supabase -> SQL Editor -> + New query (tab baru)
+4. Ctrl+A -> Ctrl+V (hapus + tempel)
+5. Klik Run
+6. Setelah sukses, RENAME tab biar rapi:
+   klik judul "Untitled" di atas -> ketik nama di DAFTAR SAMPAI BAWAH INI -> Enter
+================================================================
+
+----------------------------------------------------------------
+NO   FILE                     BAHASA KELOMPOK  STATUS
+----------------------------------------------------------------
+[1]  0001_schema.sql          SUDAH DIPAKAI    JALAN
+      ====================================
+      Membuat SELURUH struktur database:
+      - Enums (peran, sumber_dana, bidang, status_spp, dst)
+      - 11 tabel (profiles, apbdes, rekening, pendapatan, spp,
+        bkk, transaksi, proyek, progres, dokumen, aspirasi)
+      - Trigger auto-buat profile saat signup
+      - Policy RLS (staff bisa kelola, warga bisa lihat publik)
+      - View v_bku (Buku Kas Umum) & v_serapan_bidang
+
+[2]  0002_seed.sql            SUDAH DIPAKAI    JALAN
+      ====================================
+      Data contoh Desa Sukamaju TA 2025 (idempotent, aman run ulang):
+      - APBDes 2025 (1.485.240.000)
+      - 5 rekening belanja per bidang
+      - 4 sumber pendapatan (DDS/ADD/PADes/BHP)
+      - 8 SPP + 3 BKK + 6 transaksi BKU
+      - 4 proyek fisik + 5 riwayat progres
+      - 3 dokumen publik + 2 aspirasi
+
+[3]  0003_portal_policies.sql SUDAH DIPAKAI    JALAN
+      ====================================
+      Izin PUBLIK baca tabel pendapatan & rekening
+      (biar Portal Transparansi tampil tanpa login)
+
+[4]  0004_fix_rls.sql         SUDAH DIPAKAI    JALAN
+      ====================================
+      Aktifkan RLS + mode FORCE di 10 tabel
+      (pengaman ekstra: RLS tetap berlaku walau via owner)
+      - TABLE profiles SENGAJA dilewati (butuh bypass utk is_staff)
+
+[5]  0005_aspirasi_rls.sql    SUDAH DIPAKAI    JALAN
+      ====================================
+      Rebuild policy aspirasi yang bersih:
+      - Warga (anon) HANYA bisa kirim (INSERT)
+      - Perubahan status / hapus hanya untuk staf
+
+[6]  0006_diag.sql            SUDAH DIPAKAI    CERITA
+      ====================================
+      Query diagnosa policy (hanya baca, tidak mengubah apa pun).
+      Dulu dipakai mencari sumber kebocoran RLS yang ternyata
+      artefak tes. TIDAK PERLU dijalankan lagi.
+
+[7]  0007_killswitch.sql      SUDAH DIPAKAI    DIBERSIHKAN (0008)
+      ====================================
+      Grendel sementara (blok anon) — ternyata RLS sudah aman,
+      jadi policy-nya dihapus lagi oleh 0008.
+
+[8]  0008_cleanup.sql         SUDAH DIPAKAI    JALAN
+      ====================================
+      Bersihkan grendel uji dari 0007 (drop 2 policy).
+
+[9]  0009_fix_serapan.sql     SUDAH DIPAKAI    JALAN
+      ====================================
+      Perbaiki view v_serapan_bidang: pagu tidak lagi
+      terganda-ganda oleh JOIN dengan SPP.
+
+[10] 0010_roles.sql           SUDAH DIPAKAI    JALAN
+      ====================================
+      Set role + jabatan + nama 3 akun demo:
+      - kades.sukamaju@gmail.com      -> Kepala Desa
+      - sekdes.sukamaju@gmail.com     -> Sekretaris Desa
+      - bendahara.sukamaju@gmail.com  -> Bendahara Desa
+      (Kalau belum dijalankan, jalankan sekarang.)
+
+[11] 0011_konfigurasi.sql      BELUM           JALANKAN
+      ====================================
+      Tabel & fitur "Konfigurasi dan Supervisi":
+      - 6 pengaturan: nama desa, kecamatan, tarif PPN,
+        tarif PPh 22, tombol hitung pajak, tahun anggaran
+      - Alur: siapa pun staf mengusulkan angka baru ->
+        Kepala Desa / Sekretaris Desa menyetujui/tolak ->
+        berlaku setelah disetujui
+      - Tarif PPN & PPh22 otomatis dipakai tombol
+        "Hitung otomatis" di form SPP
+
+[12] 0012_pelayanan.sql        BELUM           JALANKAN
+      ====================================
+      Modul Pelayanan Warga (menu "Pelayanan Warga"):
+      - Posyandu: pos, kader, data balita, penimbangan
+        bulanan, status Naik/Tetap/Turun, grafik KMS
+      - Lansia: data warga lansia + pelayanan/kunjungan
+      - Penyuluhan: kegiatan penyuluhan warga + jumlah peserta
+      - Sensus: data penduduk (nama, NIK, alamat, pekerjaan)
+      - View publik: v_kesehatan_ringkas & v_gizi_per_pos
+        (warga lihat rekap, detail + NIK hanya untuk staf)
+      - Isi contoh: 2 posyandu, 3 balita, 3 lansia,
+        2 penyuluhan, 6 penduduk
+
+[13] 0013_fix_gizi.sql         SUDAH           JALAN
+      ====================================
+      Perbaiki v_gizi_per_pos: status Naik/Turun kini
+      membandingkan penimbangan TERAKHIR vs SEBELUMNYA
+      (sebelumnya logika salah -> semua 0)
+
+[14] 0014_identitas.sql        BELUM           JALANKAN
+      ====================================
+      Identitas desa -> Tegal Rejo, Kec. Tempursari,
+      Kab. Lumajang (update setting konfigurasi + profil)
+      Aplikasi otomatis membaca dari setting "Konfigurasi &
+      Supervisi" — ganti desa/kecamatan bisa lewat menu itu.
+
+================================================================
+AKUN DEMO (password semua: Demo!2345)
+================================================================
+  kades.sukamaju@gmail.com       Kepala Desa
+  sekdes.sukamaju@gmail.com      Sekretaris Desa
+  bendahara.sukamaju@gmail.com   Bendahara Desa
+
+NOTE: gaboleh register lagi pakai email yg sama (sudah terpakai).
+
+================================================================
+AKUN DEMO -> GANTI JADI AKUN SUNGGAHAN
+================================================================
+Cara 1 (ubah email yang ada):
+  Supabase -> Authentication -> Users -> klik user -> Update email
+
+Cara 2 (buat baru, hapus demo):
+  1. App -> halaman Login -> tab Daftar -> isi email sungguhan
+  2. Supabase -> Authentication -> Users -> hapus akun demo
+     (profile/baris terkait ikut terhapus otomatis)
+
+Role staf baru selalu default "bendahara".
+Untuk jadi kades/sekdes: jalankan UPDATE role di SQL Editor, atau
+tambah di dashboard -> Table Editor -> tabel profiles.
+================================================================

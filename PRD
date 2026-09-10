@@ -1,0 +1,37 @@
+Berikut adalah draf daftar fitur untuk Website Manajemen Keuangan Desa yang terstruktur berdasarkan kebutuhan operasional perangkat desa, transparansi publik, dan regulasi pengelolaan keuangan desa.
+1. Fitur Utama & Modul Operasional
+A. Modul Perencanaan & Penganggaran (APBDes)
+
+    Penyusunan APBDes & RKPDes: Input Rencana Kerja Pemerintah Desa (RKPDes) dan Anggaran Pendapatan dan Belanja Desa (APBDes) per tahun anggaran.
+
+    Pengelompokan Bidang & Kegiatan: Klasifikasi otomatis berdasarkan bidang (Penyelenggaraan Pemerintahan, Pembangunan, Pembinaan Kemasyarakatan, Pemberdayaan, dan Penanggulangan Bencana).
+
+    Manajemen Perubahan APBDes: Fitur untuk mencatat dan melacak histori revisi atau perubahan anggaran (APBDes Perubahan).
+
+B. Modul Penatausahaan & Pengeluaran (Kas & Transaksi)
+
+    Pencatatan Pendapatan: Input penerimaan desa (PADes, Dana Desa, ADD, Bagi Hasil Pajak/Retribusi, Bantuan Keuangan, dll.).
+
+    Pencatatan Belanja & Pencairan Dana: Input Surat Permintaan Pembayaran (SPP), Bukti Kas Keluar (BKK), dan kuitansi belanja.
+
+    Integrasi Pajak: Perhitungan dan pencatatan potongan pajak otomatis (PPh 21, PPh 22, PPh 23, PPN) pada setiap transaksi belanja.
+
+    Manajemen Buku Kas: Auto-generate Buku Kas Umum (BKU), Buku Kas Pembantu Pajak, dan Buku Bank Desa.
+
+C. Modul Pelaporan & Akuntabilitas
+
+    Laporan Realisasi Anggaran (LRA): Pemantauan penyerapan anggaran secara real-time per bidang, kegiatan, atau sumber dana.
+
+    Ekspor Dokumen Resmi: Cetak dan ekspor laporan ke format PDF dan Excel sesuai format standar pemerintah.
+
+    Laporan Pertanggungjawaban (LPJ): Penyusunan LPJ semesteran dan akhir tahun secara otomatis dari data transaksi.
+
+2. Fitur Transparansi & Publikasi (Portal Publik)
+
+    Dashboard Transparansi Anggaran: Tampilan grafik infografis APBDes (pendapatan vs belanja) yang mudah dipahami warga desa.
+
+    Peta & Status Kegiatan Pembangunan: Visualisasi lokasi dan kemajuan (progress) proyek fisik desa beserta serapan anggarannya.
+
+    Portal Download Dokumen: Akses publik untuk mengunduh dokumen APBDes, Perdes, dan Laporan Realisasi secara transparan.
+
+    Kanal Aspirasi & Pengaduan Warga: Form masukan atau pertanyaan dari warga terkait alokasi dan penggunaan dana desa.
