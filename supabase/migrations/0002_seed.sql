@@ -1,6 +1,6 @@
 -- ============ FILE: supabase/migrations/0002_seed.sql ============
 -- ============================================================
--- SiskueDes Seed — Demo data Desa Sukamaju TA 2025
+-- SiskueDes Seed — Demo data Desa Tegal Rejo TA 2025
 -- Idempotent: aman dijalankan ulang. SQL Editor → Run
 -- ============================================================
 
@@ -80,7 +80,7 @@ insert into public.progres (proyek_id, tanggal, fisik_persen, hok, catatan) valu
 
 -- ---------- DOKUMEN ----------
 insert into public.dokumen (judul, jenis, deskripsi, ukuran, tanggal, publik) values
-('Perdes APBDes No. 04/2025', 'perdes', 'Peraturan Desa Sukamaju tentang APBDes TA 2025 (Salinan Asli Berstempel)', '4.8 MB', '2025-01-15', true),
+('Perdes APBDes No. 04/2025', 'perdes', 'Peraturan Desa Tegal Rejo tentang APBDes TA 2025 (Salinan Asli Berstempel)', '4.8 MB', '2025-01-15', true),
 ('Laporan Realisasi Semester I (Jan-Jun)', 'lra', 'Rincian SPP, Rekapitulasi Kas Umum Desa, dan Bukti Setor Pajak', '7.2 MB', '2025-07-08', true),
 ('Infografis Baliho APBDes (Hi-Res)', 'infografis', 'Grafis poster cetak baliho 3x4m yang dipasang di Kantor Desa', '12.1 MB', '2025-01-20', true);
 

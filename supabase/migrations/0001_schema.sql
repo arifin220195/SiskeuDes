@@ -24,7 +24,7 @@ create table public.profiles (
   nama text not null,
   jabatan text not null default 'Bendahara',
   role peran not null default 'bendahara',
-  desa text not null default 'Sukamaju',
+  desa text not null default 'Tegal Rejo',
   kecamatan text not null default 'Sukaresmi',
   created_at timestamptz not null default now()
 );

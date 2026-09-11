@@ -29,7 +29,7 @@ create policy "konfigur write" on public.konfigurasi
 
 -- ---------- SETTING DEFAULT ----------
 insert into public.konfigurasi (kunci, kategori, nama, deskripsi, nilai_aktif) values
-  ('desa',           'Profil Desa', 'Nama Desa',            'Nama desa yang tampil di aplikasi.', 'Sukamaju'),
+  ('desa',           'Profil Desa', 'Nama Desa',            'Nama desa yang tampil di aplikasi.', 'Tegal Rejo'),
   ('kecamatan',      'Profil Desa', 'Kecamatan',            'Kecamatan tempat desa berada.', 'Sukaresmi'),
   ('tarif_ppn',      'Pajak SPP',   'Tarif PPN (%)',        'Persentase PPN untuk hitung otomatis SPP.', '11'),
   ('tarif_pph22',    'Pajak SPP',   'Tarif PPh 22 (%)',     'Persentase PPh pasal 22 untuk hitung otomatis SPP.', '1.5'),
