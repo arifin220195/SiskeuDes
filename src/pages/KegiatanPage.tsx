@@ -12,7 +12,7 @@ function today() { return new Date().toISOString().slice(0, 10) }
 type Tab = 'meja1' | 'meja23' | 'meja4' | 'meja5'
 
 export default function KegiatanPage() {
-  const { list: posyandu, aktifId, setAktif } = usePosyandu()
+  const { list: posyandu, aktif, aktifId, setAktif, locked } = usePosyandu()
   const { user } = useAuth()
   const [sasaran, setSasaran] = useState<Sasaran[]>([])
   const [kegiatans, setKegiatans] = useState<Kegiatan[]>([])
@@ -204,8 +204,17 @@ export default function KegiatanPage() {
       <Card className="p-space-md flex flex-col gap-space-sm">
         <h3 className="font-label-md text-label-md text-on-surface font-bold uppercase tracking-wider">Persiapan Kegiatan</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-space-sm">
-          <SelField label="Posyandu" value={aktifId} onChange={setAktif}
-            options={posyandu.map((p) => ({ value: p.id, label: p.nama }))} allowEmpty="— pilih posyandu —" />
+          {locked ? (
+            <div className="flex flex-col gap-space-xxs">
+              <span className="font-label-xs text-label-xs text-on-surface-variant font-semibold uppercase tracking-wider">Posyandu Terlampir</span>
+              <div className="bg-surface-container rounded-lg px-space-md py-space-xs font-body-sm text-body-sm text-on-surface font-bold">
+                {aktif?.nama ?? '—'}
+              </div>
+            </div>
+          ) : (
+            <SelField label="Posyandu" value={aktifId} onChange={setAktif}
+              options={posyandu.map((p) => ({ value: p.id, label: p.nama }))} allowEmpty="— pilih posyandu —" />
+          )}
           <SelField label="Kegiatan (atau buat baru)" value={kegiatanId} onChange={setKegiatanId}
             options={kegiatanPos.map((k) => ({ value: k.id, label: `${k.tanggal} · ${k.nama}` }))} allowEmpty="— pilih / buat —" />
           <div className="flex items-end gap-space-xs">

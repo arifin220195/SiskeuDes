@@ -9,7 +9,7 @@ import { KELOMPOK_SINGKAT, umurSaatIni } from '../config/kelompok'
 function today() { return new Date().toISOString().slice(0, 10) }
 
 export default function LogistikPage() {
-  const { list: posyandu, aktifId, setAktif } = usePosyandu()
+  const { list: posyandu, aktif, aktifId, setAktif, locked } = usePosyandu()
   const { user } = useAuth()
   const [items, setItems] = useState<LogistikItem[]>([])
   const [stoks, setStoks] = useState<LogistikStok[]>([])
@@ -109,7 +109,13 @@ export default function LogistikPage() {
 
       <div className="flex items-center gap-space-xs">
         <SelField label="" value={jenis} onChange={(v) => setJenis(v as 'masuk' | 'keluar')} options={[{ value: 'masuk', label: '+ Masuk (Terima dari Puskesmas)' }, { value: 'keluar', label: '- Keluar (Pemberian / Distribusi)' }]} />
-        <SelField label="" value={aktifId} onChange={setAktif} options={posyandu.map((p) => ({ value: p.id, label: p.nama }))} allowEmpty="— semua —" />
+        {locked ? (
+          <div className="flex items-center gap-space-xs px-space-sm py-space-xxs bg-surface-container-low rounded-lg font-body-sm text-body-sm text-on-surface font-bold">
+            {aktif?.nama ?? '—'}
+          </div>
+        ) : (
+          <SelField label="" value={aktifId} onChange={setAktif} options={posyandu.map((p) => ({ value: p.id, label: p.nama }))} allowEmpty="— semua —" />
+        )}
       </div>
 
       <Card className="p-space-md flex flex-col gap-space-sm">

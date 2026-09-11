@@ -26,7 +26,8 @@ const FIELDS: { value: Sasaran['kelompok']; label: string }[] = [
 ]
 
 export default function SasaranPage() {
-  const { list: posyandu, aktifId, setAktif } = usePosyandu()
+  const { list: posyandu, aktifId, setAktif, lockedId } = usePosyandu()
+  const locked = Boolean(lockedId)
   const { user } = useAuth()
   const [sasaran, setSasaran] = useState<Sasaran[]>([])
   const [antropometri, setAntropometri] = useState<Antropometri[]>([])
@@ -75,15 +76,16 @@ export default function SasaranPage() {
 
   async function simpanSasaran(e: React.FormEvent) {
     e.preventDefault()
-    if (form.posyandu_id && !posyandu.some((p) => p.id === form.posyandu_id)) { setPesan('Pilih posyandu valid.'); return }
-    if (!form.posyandu_id) { setPesan('Pilih posyandu.'); return }
+    const posyanduId = lockedId || form.posyandu_id
+    if (posyanduId && !posyandu.some((p) => p.id === posyanduId)) { setPesan('Pilih posyandu valid.'); return }
+    if (!posyanduId) { setPesan('Pilih posyandu.'); return }
     if (!form.nama.trim() || !form.tanggal_lahir) { setPesan('Nama dan tanggal lahir wajib diisi.'); return }
     const nik = form.nik.trim()
     if (nik && !validNIK(nik)) { setPesan('NIK harus 16 digit angka. Kosongkan bila belum ada (bayi baru lahir).'); return }
     setBusy(true)
     try {
       const { error } = await supabase.from('sasaran').insert({
-        posyandu_id: form.posyandu_id,
+        posyandu_id: posyanduId,
         wilaya_id: form.wilaya_id || null,
         nik: nik || null,
         nik_sementara: !nik,
@@ -136,8 +138,17 @@ export default function SasaranPage() {
           <form onSubmit={simpanSasaran} className="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-sm">
             <h3 className="font-label-md text-label-md text-on-surface font-bold uppercase tracking-wider">+ Daftarkan Sasaran Baru</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-space-sm">
+              {locked ? (
+              <div className="flex flex-col gap-space-xxs">
+                <span className="font-label-xs text-label-xs text-on-surface-variant font-semibold uppercase tracking-wider">Posyandu Terlampir</span>
+                <div className="bg-surface-container rounded-lg px-space-md py-space-xs font-body-sm text-body-sm text-on-surface font-bold">
+                  {posyandu.find((p) => p.id === lockedId)?.nama ?? '—'}
+                </div>
+              </div>
+            ) : (
               <SelField label="Posyandu" value={form.posyandu_id} onChange={(v) => setForm((f) => ({ ...f, posyandu_id: v }))}
                 options={posyandu.map((p) => ({ value: p.id, label: p.nama }))} allowEmpty="— pilih —" />
+            )}
               <Field label="NIK (16 digit)" value={form.nik} onChange={(v) => setForm((f) => ({ ...f, nik: v }))} placeholder="Kosong utk bayi baru lahir" hint={form.nik && !validNIK(form.nik) ? 'NIK belum valid' : undefined} />
               <SelField label="Dusun / RW" value={form.wilaya_id} onChange={(v) => setForm((f) => ({ ...f, wilaya_id: v }))}
                 options={wilayah.map((w) => ({ value: w.id, label: w.nama }))} allowEmpty="— tanpa wilayah —" />

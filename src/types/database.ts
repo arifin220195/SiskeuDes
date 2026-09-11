@@ -13,6 +13,7 @@ export interface Profile {
   role: Role
   desa: string
   kecamatan: string
+  posyandu_id: string | null
   created_at: string
 }
 
